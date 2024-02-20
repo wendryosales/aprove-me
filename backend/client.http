@@ -3,11 +3,10 @@ POST http://[::1]:3001/integrations/payable
 Content-Type: application/json
 
 {
-  "id": "123e4567-e89b-12d3-a456-426614174000",
   "value": 1000.00,
   "emissionDate": "2024-02-19T12:00:00Z",
   "assignor": {
-    "document": "99.999.999/9999-99",
+    "document": "99.999.999/9999-19",
     "email": "cedente@example.com",
     "phone": "(27) 1234-5678",
     "name": "Empresa Cedente LTDA"
