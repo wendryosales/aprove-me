@@ -1,3 +1,4 @@
+# @name Create a new payable
 POST http://[::1]:3001/integrations/payable
 Content-Type: application/json
 

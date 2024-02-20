@@ -1,9 +1,12 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
+import { EnvService } from "./env/env.service";
 
 async function bootstrap() {
+  const logger = new Logger("bootstrap");
   const app = await NestFactory.create(AppModule);
+  const PORT = app.get(EnvService).get("PORT");
 
   // https://docs.nestjs.com/pipes#global-scoped-pipes
   app.useGlobalPipes(
@@ -13,8 +16,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3001);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  await app.listen(PORT);
+  logger.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();
