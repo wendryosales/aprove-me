@@ -8,8 +8,8 @@ import {
   Post,
 } from "@nestjs/common";
 import { CreatePayableDto } from "../dtos/create-payable.dto";
-import { CreatePayableUseCase } from "@/domain/application/use-cases/create-payable.use-case";
-import { GetPayableByIdUseCase } from "@/domain/application/use-cases/get-payable-by-id.use-case";
+import { CreatePayableUseCase } from "@/domain/application/use-cases/create-payable";
+import { GetPayableByIdUseCase } from "@/domain/application/use-cases/get-payable-by-id";
 
 @Controller("/integrations/payable")
 export class PayableController {
