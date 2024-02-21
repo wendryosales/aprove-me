@@ -1,16 +1,24 @@
 # @name Create a new payable
-POST http://[::1]:3001/integrations/payable
+POST {{baseUrl}}/integrations/payable
 Content-Type: application/json
 
 {
   "value": 1000.00,
   "emissionDate": "2024-02-19T12:00:00Z",
   "assignor": {
-    "document": "99.999.999/9999-19",
+    "document": "99.999.999/9999-12",
     "email": "cedente@example.com",
     "phone": "(27) 1234-5678",
     "name": "Empresa Cedente LTDA"
   }
 }
+> {%
+  client.global.set("payableId", response.body.id)
+%}
+
+###
+
+# @name Get payable by id
+GET {{baseUrl}}/integrations/payable/{{payableId}}
 
 ###
