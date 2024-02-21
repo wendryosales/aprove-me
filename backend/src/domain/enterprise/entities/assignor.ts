@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UniqueEntityID } from "@/core/entities/unique-id";
 
-interface AssignorProps {
+export interface AssignorProps {
   document: string;
   email: string;
   phone: string;
