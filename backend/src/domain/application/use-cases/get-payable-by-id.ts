@@ -13,7 +13,9 @@ type GetPayableByIdUseCaseResponse = {
 export class GetPayableByIdUseCase {
   constructor(private payableRepository: PayableRepository) {}
 
-  async execute(id: string): Promise<GetPayableByIdUseCaseResponse> {
+  async execute(
+    id: string,
+  ): Promise<GetPayableByIdUseCaseResponse | undefined> {
     const payable = await this.payableRepository.findById(id);
 
     if (!payable) {
