@@ -14,12 +14,12 @@ export class PrismaPayableMapper {
     );
   }
 
-  static toPrisma(question: Payable): Prisma.PayableUncheckedCreateInput {
+  static toPrisma(payable: Payable): Prisma.PayableUncheckedCreateInput {
     return {
-      id: question.id.toString(),
-      value: question.value,
-      assignorId: question.assignorId.toString(),
-      emissionDate: question.emissionDate,
+      id: payable.id.toString(),
+      value: payable.value,
+      assignorId: payable.assignorId.toString(),
+      emissionDate: payable.emissionDate,
     };
   }
 }
