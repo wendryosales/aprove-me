@@ -7,7 +7,6 @@ import * as path from "path";
 import * as fs from "fs";
 
 const prisma = new PrismaClient();
-
 /**
  * Generate a unique database file path for each test run
  * @param schemaId - The unique schema identifier

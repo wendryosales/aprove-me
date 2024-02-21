@@ -6,6 +6,10 @@ export default defineConfig({
   test: {
     globals: true,
     root: "./",
+    coverage: {
+      enabled: true,
+      provider: "istanbul",
+    },
   },
   plugins: [
     tsconfigPaths(),
