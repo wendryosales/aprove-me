@@ -11,15 +11,15 @@ import {
 import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assignor-by-id";
 import { AssignorPresenter } from "@/infra/http/presenters/assignor-presenter";
 import { EditAssignorUseCase } from "@/domain/application/use-cases/edit-assignor";
-import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
 import { UpdateAssignorDto } from "@/infra/http/dtos/update-assignor.dto";
+import { DeleteAssignorUseCase } from "@/domain/application/use-cases/delete-assignor";
 
 @Controller("/integrations/assignor")
 export class AssignorController {
   constructor(
     private getAssignorByIdUseCase: GetAssignorByIdUseCase,
     private editAssignorUseCase: EditAssignorUseCase,
-    private deleteAssignorUseCase: DeletePayableUseCase,
+    private deleteAssignorUseCase: DeleteAssignorUseCase,
   ) {}
 
   @Get("/:id")
