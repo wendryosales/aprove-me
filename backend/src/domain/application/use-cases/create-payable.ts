@@ -3,6 +3,7 @@ import { Payable } from "@/domain/enterprise/entities/payable";
 import { Assignor } from "@/domain/enterprise/entities/assignor";
 import { PayableRepository } from "@/domain/application/repositories/payable.repository";
 import { AssignorRepository } from "@/domain/application/repositories/assignor.repository";
+import { Either, right } from "@/core/either";
 
 interface CreatePayableUseCaseRequest {
   value: number;
@@ -15,18 +16,13 @@ interface CreatePayableUseCaseRequest {
   };
 }
 
-type CreatePayableUseCaseResponse = {
-  id: string;
-  value: number;
-  emissionDate: Date;
-  assignor: {
-    id: string;
-    document: string;
-    email: string;
-    phone: string;
-    name: string;
-  };
-};
+type CreatePayableUseCaseResponse = Either<
+  null,
+  {
+    payable: Payable;
+    assignor: Assignor;
+  }
+>;
 
 @Injectable()
 export class CreatePayableUseCase {
@@ -54,17 +50,9 @@ export class CreatePayableUseCase {
     await this.assignorRepository.create(assignor);
     await this.payableRepository.create(payable);
 
-    return {
-      id: payable.id.toString(),
-      value: payable.value,
-      emissionDate: payable.emissionDate,
-      assignor: {
-        id: assignor.id.toString(),
-        document: assignor.document,
-        email: assignor.email,
-        phone: assignor.phone,
-        name: assignor.name,
-      },
-    };
+    return right({
+      payable,
+      assignor,
+    });
   }
 }
