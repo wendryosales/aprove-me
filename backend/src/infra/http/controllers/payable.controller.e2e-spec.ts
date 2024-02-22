@@ -14,7 +14,7 @@ describe("PayableController (e2e)", () => {
   let assignorFactory: AssignorFactory;
   let payableFactory: PayableFactory;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
       providers: [AssignorFactory, PayableFactory],
