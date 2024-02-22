@@ -14,8 +14,16 @@ export class Payable extends Entity<PayableProps> {
     return this.props.value;
   }
 
+  set value(value: number) {
+    this.props.value = value;
+  }
+
   get emissionDate(): Date {
     return this.props.emissionDate;
+  }
+
+  set emissionDate(emissionDate: Date) {
+    this.props.emissionDate = emissionDate;
   }
 
   get assignorId(): UniqueEntityID {
