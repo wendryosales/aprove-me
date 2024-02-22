@@ -7,6 +7,7 @@ import { AssignorController } from "@/infra/http/controllers/assignor.controller
 import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assignor-by-id";
 import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
 import { filtersProviders } from "@/infra/http/filters/filters-providers";
+import { EditPayableUseCase } from "@/domain/application/use-cases/edit-payable";
 
 @Module({
   imports: [DatabaseModule],
@@ -15,6 +16,7 @@ import { filtersProviders } from "@/infra/http/filters/filters-providers";
     CreatePayableUseCase,
     GetPayableByIdUseCase,
     GetAssignorByIdUseCase,
+    EditPayableUseCase,
     DeletePayableUseCase,
     ...filtersProviders,
   ],
