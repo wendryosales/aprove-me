@@ -1,32 +1,35 @@
 import { Injectable } from "@nestjs/common";
 import { PayableRepository } from "@/domain/application/repositories/payable.repository";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found.error";
+import { Either, left, right } from "@/core/either";
+import { Payable } from "@/domain/enterprise/entities/payable";
 
-type GetPayableByIdUseCaseResponse = {
-  id: string;
-  value: number;
-  emissionDate: Date;
-  assignorId: string;
-};
+interface GetPayableByIdUseCaseRequest {
+  payableId: string;
+}
+
+type GetPayableByIdUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    payable: Payable;
+  }
+>;
 
 @Injectable()
 export class GetPayableByIdUseCase {
   constructor(private payableRepository: PayableRepository) {}
 
-  async execute(
-    id: string,
-  ): Promise<GetPayableByIdUseCaseResponse | undefined> {
-    const payable = await this.payableRepository.findById(id);
+  async execute({
+    payableId,
+  }: GetPayableByIdUseCaseRequest): Promise<
+    GetPayableByIdUseCaseResponse | undefined
+  > {
+    const payable = await this.payableRepository.findById(payableId);
 
     if (!payable) {
-      throw new ResourceNotFoundError();
+      return left(new ResourceNotFoundError());
     }
 
-    return {
-      id: payable.id.toString(),
-      value: payable.value,
-      emissionDate: payable.emissionDate,
-      assignorId: payable.assignorId.toString(),
-    };
+    return right({ payable });
   }
 }
