@@ -18,14 +18,17 @@ Content-Type: application/json
 %}
 
 ###
-
 # @name Get payable by id
 GET {{baseUrl}}/integrations/payable/{{payableId}}
 
 ###
-###
+# @name Delete payable
+DELETE {{baseUrl}}/integrations/assignor/{{payableId}}
 
+###
 # @name Get assignor by id
 GET {{baseUrl}}/integrations/assignor/{{assignorId}}
 
 ###
+# @name Delete assignor
+DELETE {{baseUrl}}/integrations/assignor/{{assignorId}}
