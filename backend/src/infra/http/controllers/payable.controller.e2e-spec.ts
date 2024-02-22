@@ -7,6 +7,7 @@ import { makePayable, PayableFactory } from "@test/factories/make-payable";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { AssignorFactory, makeAssignor } from "@test/factories/make-assignor";
 import { DatabaseModule } from "@/infra/database/database.module";
+import { describe } from "vitest";
 
 describe("PayableController (e2e)", () => {
   let app: INestApplication;
@@ -87,6 +88,52 @@ describe("PayableController (e2e)", () => {
         emissionDate: payable.emissionDate.toISOString(),
         assignorId: payable.assignorId.toString(),
       });
+    });
+  });
+
+  describe("PUT /integrations/payable/:id", () => {
+    it("should edit a payable", async () => {
+      const assignor = await assignorFactory.makePrismaAssignor();
+      const payable = await payableFactory.makePrismaPayable({
+        assignorId: assignor.id,
+      });
+
+      const newValue = 1000;
+
+      const response = await request(app.getHttpServer())
+        .put(`/integrations/payable/${payable.id}`)
+        .send({ value: newValue });
+
+      expect(response.status).toBe(200);
+
+      const updatedPayable = await prisma.payable.findUnique({
+        where: { id: payable.id.toString() },
+      });
+
+      expect(updatedPayable).toMatchObject({
+        value: newValue,
+      });
+    });
+  });
+
+  describe("DELETE /integrations/payable/:id", () => {
+    it("should delete a payable", async () => {
+      const assignor = await assignorFactory.makePrismaAssignor();
+      const payable = await payableFactory.makePrismaPayable({
+        assignorId: assignor.id,
+      });
+
+      const response = await request(app.getHttpServer()).delete(
+        `/integrations/payable/${payable.id}`,
+      );
+
+      expect(response.status).toBe(204);
+
+      const deletedPayable = await prisma.payable.findUnique({
+        where: { id: payable.id.toString() },
+      });
+
+      expect(deletedPayable).toBeNull();
     });
   });
 });
