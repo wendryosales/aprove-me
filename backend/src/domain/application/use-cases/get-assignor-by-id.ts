@@ -1,34 +1,33 @@
 import { Injectable } from "@nestjs/common";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found.error";
 import { AssignorRepository } from "@/domain/application/repositories/assignor.repository";
+import { Either, left, right } from "@/core/either";
+import { Assignor } from "@/domain/enterprise/entities/assignor";
 
-type GetAssignorByIdUseCaseResponse = {
-  id: string;
-  document: string;
-  email: string;
-  phone: string;
-  name: string;
-};
+interface GetPayableByIdUseCaseRequest {
+  assignorId: string;
+}
+
+type GetAssignorByIdUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    assignor: Assignor;
+  }
+>;
 
 @Injectable()
 export class GetAssignorByIdUseCase {
   constructor(private assignorRepository: AssignorRepository) {}
 
-  async execute(
-    id: string,
-  ): Promise<GetAssignorByIdUseCaseResponse | undefined> {
-    const assignor = await this.assignorRepository.findById(id);
+  async execute({
+    assignorId,
+  }: GetPayableByIdUseCaseRequest): Promise<GetAssignorByIdUseCaseResponse> {
+    const assignor = await this.assignorRepository.findById(assignorId);
 
     if (!assignor) {
-      throw new ResourceNotFoundError();
+      return left(new ResourceNotFoundError());
     }
 
-    return {
-      id: assignor.id.toString(),
-      document: assignor.document,
-      email: assignor.email,
-      phone: assignor.phone,
-      name: assignor.name,
-    };
+    return right({ assignor });
   }
 }

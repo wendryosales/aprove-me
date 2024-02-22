@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -30,7 +29,7 @@ export class PayableController {
     const result = await this.createPayableUseCase.execute(body);
 
     if (result.isLeft()) {
-      throw new BadRequestException();
+      throw result.value;
     }
 
     const { payable, assignor } = result.value;
@@ -47,7 +46,7 @@ export class PayableController {
     const result = await this.getPayableByIdUseCase.execute({ payableId });
 
     if (result.isLeft()) {
-      throw new BadRequestException();
+      throw result.value;
     }
 
     return PayablePresenter.toHTTP(result.value.payable);
@@ -64,7 +63,7 @@ export class PayableController {
     });
 
     if (result.isLeft()) {
-      throw new BadRequestException();
+      throw result.value;
     }
   }
 }

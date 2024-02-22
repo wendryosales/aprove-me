@@ -6,6 +6,7 @@ import {
   ParseUUIDPipe,
 } from "@nestjs/common";
 import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assignor-by-id";
+import { AssignorPresenter } from "@/infra/http/presenters/assignor-presenter";
 
 @Controller("/integrations/assignor")
 export class AssignorController {
@@ -13,10 +14,18 @@ export class AssignorController {
 
   @Get("/:id")
   @HttpCode(200)
-  getAssignorById(
+  async getAssignorById(
     @Param("id", new ParseUUIDPipe({ version: "4", errorHttpStatusCode: 400 }))
     id: string,
   ) {
-    return this.getAssignorByIdUseCase.execute(id);
+    const result = await this.getAssignorByIdUseCase.execute({
+      assignorId: id,
+    });
+
+    if (result.isLeft()) {
+      throw result.value;
+    }
+
+    return AssignorPresenter.toHTTP(result.value.assignor);
   }
 }

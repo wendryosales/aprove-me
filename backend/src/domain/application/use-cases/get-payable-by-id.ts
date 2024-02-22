@@ -21,9 +21,7 @@ export class GetPayableByIdUseCase {
 
   async execute({
     payableId,
-  }: GetPayableByIdUseCaseRequest): Promise<
-    GetPayableByIdUseCaseResponse | undefined
-  > {
+  }: GetPayableByIdUseCaseRequest): Promise<GetPayableByIdUseCaseResponse> {
     const payable = await this.payableRepository.findById(payableId);
 
     if (!payable) {

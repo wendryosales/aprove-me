@@ -19,19 +19,25 @@ describe("Get payable by id", () => {
 
     await inMemoryPayableRepository.create(payableData);
 
-    const response = await sut.execute(payableData.id.toString());
+    const response = await sut.execute({
+      payableId: payableData.id.toString(),
+    });
 
     const expected = inMemoryPayableRepository.items[0];
-    expect(response.id).toEqual(expected.id.toString());
+    expect(response.isRight()).toBeTruthy();
+
+    if (response.isRight()) {
+      expect(response.value.payable).toEqual(expected);
+    }
   });
 
   it("should dispathc an error if payable does not exist", async () => {
     const id = "invalid-id";
 
-    try {
-      await sut.execute(id);
-    } catch (error) {
-      expect(error).toEqual(new ResourceNotFoundError());
+    const result = await sut.execute({ payableId: id });
+    expect(result.isLeft()).toBeTruthy();
+    if (result.isLeft()) {
+      expect(result.value).toEqual(new ResourceNotFoundError());
     }
   });
 });
