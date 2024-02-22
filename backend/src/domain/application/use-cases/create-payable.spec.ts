@@ -36,9 +36,19 @@ describe("Create Payable", () => {
     };
 
     const response = await sut.execute(data);
+    const { payable, assignor } = response.value;
 
-    expect(response.id).toBeDefined();
-    expect(response.assignor.id).toBeDefined();
-    expect(response).toMatchObject(data);
+    expect(response.isRight()).toBeTruthy();
+
+    expect(payable.id).toBeDefined();
+    expect(payable.value).toBe(payableData.value);
+    expect(payable.emissionDate).toBe(payableData.emissionDate);
+    expect(payable.assignorId.toString()).toBe(assignor.id.toString());
+
+    expect(assignor.id).toBeDefined();
+    expect(assignor.document).toBe(assignorData.document);
+    expect(assignor.email).toBe(assignorData.email);
+    expect(assignor.phone).toBe(assignorData.phone);
+    expect(assignor.name).toBe(assignorData.name);
   });
 });
