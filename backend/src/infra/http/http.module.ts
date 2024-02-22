@@ -1,24 +1,24 @@
 import { Module } from "@nestjs/common";
-import { PayableController } from "./controllers/payable.controller";
-import { CreatePayableUseCase } from "@/domain/application/use-cases/create-payable";
+import { ReceivableController } from "./controllers/receivable.controller";
+import { CreateReceivableUseCase } from "@/domain/application/use-cases/create-receivable";
 import { DatabaseModule } from "@/infra/database/database.module";
-import { GetPayableByIdUseCase } from "@/domain/application/use-cases/get-payable-by-id";
+import { GetReceivableByIdUseCase } from "@/domain/application/use-cases/get-receivable-by-id";
 import { AssignorController } from "@/infra/http/controllers/assignor.controller";
 import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assignor-by-id";
-import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
+import { DeleteReceivableUseCase } from "@/domain/application/use-cases/delete-receivable";
 import { filtersProviders } from "@/infra/http/filters/filters-providers";
-import { EditPayableUseCase } from "@/domain/application/use-cases/edit-payable";
+import { EditReceivableUseCase } from "@/domain/application/use-cases/edit-receivable";
 import { EditAssignorUseCase } from "@/domain/application/use-cases/edit-assignor";
 import { DeleteAssignorUseCase } from "@/domain/application/use-cases/delete-assignor";
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [PayableController, AssignorController],
+  controllers: [ReceivableController, AssignorController],
   providers: [
-    CreatePayableUseCase,
-    GetPayableByIdUseCase,
-    EditPayableUseCase,
-    DeletePayableUseCase,
+    CreateReceivableUseCase,
+    GetReceivableByIdUseCase,
+    EditReceivableUseCase,
+    DeleteReceivableUseCase,
     GetAssignorByIdUseCase,
     EditAssignorUseCase,
     DeleteAssignorUseCase,

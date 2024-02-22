@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { Payable } from "@/domain/enterprise/entities/payable";
+import { Receivable } from "@/domain/enterprise/entities/receivable";
 import { Assignor } from "@/domain/enterprise/entities/assignor";
-import { PayableRepository } from "@/domain/application/repositories/payable.repository";
+import { ReceivableRepository } from "@/domain/application/repositories/receivable.repository";
 import { AssignorRepository } from "@/domain/application/repositories/assignor.repository";
 import { Either, right } from "@/core/either";
 
-interface CreatePayableUseCaseRequest {
+interface CreateReceivableUseCaseRequest {
   value: number;
   emissionDate: Date;
   assignor: {
@@ -16,24 +16,24 @@ interface CreatePayableUseCaseRequest {
   };
 }
 
-type CreatePayableUseCaseResponse = Either<
+type CreateReceivableUseCaseResponse = Either<
   null,
   {
-    payable: Payable;
+    receivable: Receivable;
     assignor: Assignor;
   }
 >;
 
 @Injectable()
-export class CreatePayableUseCase {
+export class CreateReceivableUseCase {
   constructor(
-    private payableRepository: PayableRepository,
+    private receivableRepository: ReceivableRepository,
     private assignorRepository: AssignorRepository,
   ) {}
 
   async execute(
-    data: CreatePayableUseCaseRequest,
-  ): Promise<CreatePayableUseCaseResponse> {
+    data: CreateReceivableUseCaseRequest,
+  ): Promise<CreateReceivableUseCaseResponse> {
     const assignor = Assignor.create({
       document: data.assignor.document,
       email: data.assignor.email,
@@ -41,17 +41,17 @@ export class CreatePayableUseCase {
       name: data.assignor.name,
     });
 
-    const payable = Payable.create({
+    const receivable = Receivable.create({
       emissionDate: data.emissionDate,
       value: data.value,
       assignorId: assignor.id,
     });
 
     await this.assignorRepository.create(assignor);
-    await this.payableRepository.create(payable);
+    await this.receivableRepository.create(receivable);
 
     return right({
-      payable,
+      receivable,
       assignor,
     });
   }

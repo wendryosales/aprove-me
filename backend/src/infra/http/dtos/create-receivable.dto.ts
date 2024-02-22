@@ -7,7 +7,7 @@ import {
 import { AssignorDto } from "./assignor.dto";
 import { Type } from "class-transformer";
 
-export class CreatePayableDto {
+export class CreateReceivableDto {
   @IsNumber()
   @IsNotEmpty()
   value: number;

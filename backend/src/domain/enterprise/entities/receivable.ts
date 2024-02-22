@@ -1,15 +1,15 @@
 import { UniqueEntityID } from "@/core/entities/unique-id";
 import { Entity } from "@/core/entities/entity";
 
-export interface PayableProps {
+export interface ReceivableProps {
   value: number;
   emissionDate: Date;
   assignorId: UniqueEntityID;
 }
 
-export type CreatePayableProps = PayableProps;
+export type CreateReceivableProps = ReceivableProps;
 
-export class Payable extends Entity<PayableProps> {
+export class Receivable extends Entity<ReceivableProps> {
   get value(): number {
     return this.props.value;
   }
@@ -31,9 +31,9 @@ export class Payable extends Entity<PayableProps> {
   }
 
   public static create(
-    props: CreatePayableProps,
+    props: CreateReceivableProps,
     id?: UniqueEntityID,
-  ): Payable {
-    return new Payable(props, id);
+  ): Receivable {
+    return new Receivable(props, id);
   }
 }

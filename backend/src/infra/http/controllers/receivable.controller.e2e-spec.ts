@@ -3,41 +3,44 @@ import request from "supertest";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { AppModule } from "@/infra/app.module";
-import { makePayable, PayableFactory } from "@test/factories/make-payable";
+import {
+  makeReceivable,
+  ReceivableFactory,
+} from "@test/factories/make-receivable";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { AssignorFactory, makeAssignor } from "@test/factories/make-assignor";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { describe } from "vitest";
 
-describe("PayableController (e2e)", () => {
+describe("ReceivableController (e2e)", () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let assignorFactory: AssignorFactory;
-  let payableFactory: PayableFactory;
+  let receivableFactory: ReceivableFactory;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [AssignorFactory, PayableFactory],
+      providers: [AssignorFactory, ReceivableFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
     prisma = moduleRef.get(PrismaService);
     assignorFactory = moduleRef.get(AssignorFactory);
-    payableFactory = moduleRef.get(PayableFactory);
+    receivableFactory = moduleRef.get(ReceivableFactory);
     await app.init();
   });
 
-  describe("POST /integrations/payable", () => {
-    it("should create a payable", async () => {
+  describe("POST /integrations/receivable", () => {
+    it("should create a receivable", async () => {
       const assignor = makeAssignor();
-      const payable = makePayable();
+      const receivable = makeReceivable();
 
       const response = await request(app.getHttpServer())
-        .post("/integrations/payable")
+        .post("/integrations/receivable")
         .send({
-          value: payable.value,
-          emissionDate: payable.emissionDate,
+          value: receivable.value,
+          emissionDate: receivable.emissionDate,
           assignor: {
             document: assignor.document,
             email: assignor.email,
@@ -48,17 +51,17 @@ describe("PayableController (e2e)", () => {
 
       expect(response.status).toBe(201);
 
-      const createdPayable = await prisma.payable.findUnique({
+      const createdReceivable = await prisma.receivable.findUnique({
         where: { id: response.body.id },
       });
 
-      expect(createdPayable).toMatchObject({
-        value: payable.value,
-        emissionDate: payable.emissionDate,
+      expect(createdReceivable).toMatchObject({
+        value: receivable.value,
+        emissionDate: receivable.emissionDate,
       });
 
       const createdAssignor = await prisma.assignor.findUnique({
-        where: { id: createdPayable.assignorId },
+        where: { id: createdReceivable.assignorId },
       });
 
       expect(createdAssignor).toMatchObject({
@@ -70,70 +73,70 @@ describe("PayableController (e2e)", () => {
     });
   });
 
-  describe("GET /integrations/payable/:id", () => {
-    it("should get a payable by id", async () => {
+  describe("GET /integrations/receivable/:id", () => {
+    it("should get a receivable by id", async () => {
       const assignor = await assignorFactory.makePrismaAssignor();
-      const payable = await payableFactory.makePrismaPayable({
+      const receivable = await receivableFactory.makePrismaReceivable({
         assignorId: assignor.id,
       });
 
       const response = await request(app.getHttpServer()).get(
-        `/integrations/payable/${payable.id}`,
+        `/integrations/receivable/${receivable.id}`,
       );
 
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
-        id: payable.id.toString(),
-        value: payable.value,
-        emissionDate: payable.emissionDate.toISOString(),
-        assignorId: payable.assignorId.toString(),
+        id: receivable.id.toString(),
+        value: receivable.value,
+        emissionDate: receivable.emissionDate.toISOString(),
+        assignorId: receivable.assignorId.toString(),
       });
     });
   });
 
-  describe("PUT /integrations/payable/:id", () => {
-    it("should edit a payable", async () => {
+  describe("PUT /integrations/receivable/:id", () => {
+    it("should edit a receivable", async () => {
       const assignor = await assignorFactory.makePrismaAssignor();
-      const payable = await payableFactory.makePrismaPayable({
+      const receivable = await receivableFactory.makePrismaReceivable({
         assignorId: assignor.id,
       });
 
       const newValue = 1000;
 
       const response = await request(app.getHttpServer())
-        .put(`/integrations/payable/${payable.id}`)
+        .put(`/integrations/receivable/${receivable.id}`)
         .send({ value: newValue });
 
       expect(response.status).toBe(200);
 
-      const updatedPayable = await prisma.payable.findUnique({
-        where: { id: payable.id.toString() },
+      const updatedReceivable = await prisma.receivable.findUnique({
+        where: { id: receivable.id.toString() },
       });
 
-      expect(updatedPayable).toMatchObject({
+      expect(updatedReceivable).toMatchObject({
         value: newValue,
       });
     });
   });
 
-  describe("DELETE /integrations/payable/:id", () => {
-    it("should delete a payable", async () => {
+  describe("DELETE /integrations/receivable/:id", () => {
+    it("should delete a receivable", async () => {
       const assignor = await assignorFactory.makePrismaAssignor();
-      const payable = await payableFactory.makePrismaPayable({
+      const receivable = await receivableFactory.makePrismaReceivable({
         assignorId: assignor.id,
       });
 
       const response = await request(app.getHttpServer()).delete(
-        `/integrations/payable/${payable.id}`,
+        `/integrations/receivable/${receivable.id}`,
       );
 
       expect(response.status).toBe(204);
 
-      const deletedPayable = await prisma.payable.findUnique({
-        where: { id: payable.id.toString() },
+      const deletedReceivable = await prisma.receivable.findUnique({
+        where: { id: receivable.id.toString() },
       });
 
-      expect(deletedPayable).toBeNull();
+      expect(deletedReceivable).toBeNull();
     });
   });
 });

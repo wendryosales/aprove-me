@@ -1,34 +1,52 @@
-# @name Create a new payable
-POST {{baseUrl}}/integrations/payable
+# @name Create a new receivable
+POST {{baseUrl}}/integrations/receivable
 Content-Type: application/json
 
 {
   "value": 1000.00,
   "emissionDate": "2024-02-19T12:00:00Z",
   "assignor": {
-    "document": "99.999.999/9999-18",
+    "document": "99.999.999/9919-18",
     "email": "cedente@example.com",
     "phone": "(27) 1234-5678",
     "name": "Empresa Cedente LTDA"
   }
 }
 > {%
-  client.global.set("payableId", response.body.id)
+  client.global.set("receivableId", response.body.id)
   client.global.set("assignorId", response.body.assignor.id)
 %}
 
 ###
-# @name Get payable by id
-GET {{baseUrl}}/integrations/payable/{{payableId}}
+# @name Get receivable by id
+GET {{baseUrl}}/integrations/receivable/{{receivableId}}
 
 ###
-# @name Delete payable
-DELETE {{baseUrl}}/integrations/assignor/{{payableId}}
+# @name Edit receivable
+PUT {{baseUrl}}/integrations/receivable/{{receivableId}}
+Content-Type: application/json
+
+{
+    "value": 3000.00
+}
 
 ###
 # @name Get assignor by id
 GET {{baseUrl}}/integrations/assignor/{{assignorId}}
 
 ###
+# @name Edit Assignor
+PUT {{baseUrl}}/integrations/assignor/{{assignorId}}
+Content-Type: application/json
+
+{
+  "phone": "(27) 1234-5679"
+}
+
+###
 # @name Delete assignor
 DELETE {{baseUrl}}/integrations/assignor/{{assignorId}}
+
+###
+# @name Delete receivable
+DELETE {{baseUrl}}/integrations/receivable/{{receivableId}}

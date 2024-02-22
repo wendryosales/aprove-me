@@ -4,7 +4,7 @@ import { AssignorRepository } from "@/domain/application/repositories/assignor.r
 import { Either, left, right } from "@/core/either";
 import { Assignor } from "@/domain/enterprise/entities/assignor";
 
-interface GetPayableByIdUseCaseRequest {
+interface GetReceivableByIdUseCaseRequest {
   assignorId: string;
 }
 
@@ -21,7 +21,7 @@ export class GetAssignorByIdUseCase {
 
   async execute({
     assignorId,
-  }: GetPayableByIdUseCaseRequest): Promise<GetAssignorByIdUseCaseResponse> {
+  }: GetReceivableByIdUseCaseRequest): Promise<GetAssignorByIdUseCaseResponse> {
     const assignor = await this.assignorRepository.findById(assignorId);
 
     if (!assignor) {
