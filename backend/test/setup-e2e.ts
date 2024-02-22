@@ -5,6 +5,7 @@ import { execSync } from "node:child_process";
 
 import * as path from "path";
 import * as fs from "fs";
+import * as process from "process";
 
 const prisma = new PrismaClient();
 /**
@@ -17,10 +18,10 @@ function generateUniqueDatabasePath(schemaId: string) {
 }
 
 const schemaId = randomUUID();
+const databasePath = generateUniqueDatabasePath(schemaId);
+process.env.DATABASE_URL = `file:${databasePath}`;
 
 beforeAll(async () => {
-  const databasePath = generateUniqueDatabasePath(schemaId);
-  process.env.DATABASE_URL = `file:${databasePath}`;
   execSync("pnpm prisma migrate deploy");
 });
 
