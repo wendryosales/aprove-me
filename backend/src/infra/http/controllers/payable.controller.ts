@@ -14,6 +14,7 @@ import { CreatePayableUseCase } from "@/domain/application/use-cases/create-paya
 import { GetPayableByIdUseCase } from "@/domain/application/use-cases/get-payable-by-id";
 import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
 import { PayableAssignorPresenter } from "@/infra/http/presenters/payable-assignor-presenter";
+import { PayablePresenter } from "@/infra/http/presenters/payable-presenter";
 
 @Controller("/integrations/payable")
 export class PayableController {
@@ -39,11 +40,17 @@ export class PayableController {
 
   @Get("/:id")
   @HttpCode(200)
-  getPayableById(
+  async getPayableById(
     @Param("id", new ParseUUIDPipe({ version: "4", errorHttpStatusCode: 400 }))
-    id: string,
+    payableId: string,
   ) {
-    return this.getPayableByIdUseCase.execute(id);
+    const result = await this.getPayableByIdUseCase.execute({ payableId });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
+
+    return PayablePresenter.toHTTP(result.value.payable);
   }
 
   @Delete(":id")
@@ -53,7 +60,7 @@ export class PayableController {
     payableId: string,
   ) {
     const result = await this.deletePayableUseCase.execute({
-      payableId: payableId,
+      payableId,
     });
 
     if (result.isLeft()) {
