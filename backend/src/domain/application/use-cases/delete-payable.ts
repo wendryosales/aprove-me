@@ -4,7 +4,7 @@ import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found.e
 import { Either, left, right } from "@/core/either";
 
 interface DeletePayableUseCaseRequest {
-  payableId: string;
+  assignorId: string;
 }
 
 type DeletePayableUseCaseResponse = Either<ResourceNotFoundError, null>;
@@ -14,9 +14,9 @@ export class DeletePayableUseCase {
   constructor(private payableRepository: PayableRepository) {}
 
   async execute({
-    payableId,
+    assignorId,
   }: DeletePayableUseCaseRequest): Promise<DeletePayableUseCaseResponse> {
-    const payable = await this.payableRepository.findById(payableId);
+    const payable = await this.payableRepository.findById(assignorId);
 
     if (!payable) {
       return left(new ResourceNotFoundError());

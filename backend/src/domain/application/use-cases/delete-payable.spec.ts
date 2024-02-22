@@ -20,7 +20,7 @@ describe("Delete Payable", () => {
     await inMemoryPayableRepository.create(payableData);
 
     const response = await sut.execute({
-      payableId: payableData.id.toString(),
+      assignorId: payableData.id.toString(),
     });
 
     expect(response.isRight()).toBeTruthy();
@@ -29,7 +29,7 @@ describe("Delete Payable", () => {
   it("should dispathc an error if payable does not exist", async () => {
     const id = "invalid-id";
 
-    const result = await sut.execute({ payableId: id });
+    const result = await sut.execute({ assignorId: id });
     expect(result.isLeft()).toBeTruthy();
     if (result.isLeft()) {
       expect(result.value).toEqual(new ResourceNotFoundError());

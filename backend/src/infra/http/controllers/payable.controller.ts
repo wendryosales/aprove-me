@@ -84,7 +84,7 @@ export class PayableController {
     payableId: string,
   ) {
     const result = await this.deletePayableUseCase.execute({
-      payableId,
+      assignorId: payableId,
     });
 
     if (result.isLeft()) {
