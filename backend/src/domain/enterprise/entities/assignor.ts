@@ -15,16 +15,32 @@ export class Assignor extends Entity<AssignorProps> {
     return this.props.document;
   }
 
+  set document(value: string) {
+    this.props.document = value;
+  }
+
   get name(): string {
     return this.props.name;
+  }
+
+  set name(value: string) {
+    this.props.name = value;
   }
 
   get email(): string {
     return this.props.email;
   }
 
+  set email(value: string) {
+    this.props.email = value;
+  }
+
   get phone(): string {
     return this.props.phone;
+  }
+
+  set phone(value: string) {
+    this.props.phone = value;
   }
 
   public static create(
