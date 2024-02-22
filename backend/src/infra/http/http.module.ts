@@ -8,6 +8,8 @@ import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assig
 import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
 import { filtersProviders } from "@/infra/http/filters/filters-providers";
 import { EditPayableUseCase } from "@/domain/application/use-cases/edit-payable";
+import { EditAssignorUseCase } from "@/domain/application/use-cases/edit-assignor";
+import { DeleteAssignorUseCase } from "@/domain/application/use-cases/delete-assignor";
 
 @Module({
   imports: [DatabaseModule],
@@ -15,9 +17,11 @@ import { EditPayableUseCase } from "@/domain/application/use-cases/edit-payable"
   providers: [
     CreatePayableUseCase,
     GetPayableByIdUseCase,
-    GetAssignorByIdUseCase,
     EditPayableUseCase,
     DeletePayableUseCase,
+    GetAssignorByIdUseCase,
+    EditAssignorUseCase,
+    DeleteAssignorUseCase,
     ...filtersProviders,
   ],
 })
