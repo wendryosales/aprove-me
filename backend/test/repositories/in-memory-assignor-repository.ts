@@ -11,4 +11,14 @@ export class InMemoryAssignorRepository implements AssignorRepository {
   async findById(id: string): Promise<Assignor | null> {
     return this.items.find((assignor) => assignor.id.toString() === id) || null;
   }
+
+  async delete(assignor: Assignor): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === assignor.id);
+    this.items.splice(itemIndex, 1);
+  }
+
+  async save(assignor: Assignor): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === assignor.id);
+    this.items[itemIndex] = assignor;
+  }
 }

@@ -11,4 +11,14 @@ export class InMemoryPayableRepository implements PayableRepository {
   async findById(id: string): Promise<Payable | null> {
     return this.items.find((payable) => payable.id.toString() === id) || null;
   }
+
+  async delete(payable: Payable): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === payable.id);
+    this.items.splice(itemIndex, 1);
+  }
+
+  async save(payable: Payable): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id === payable.id);
+    this.items[itemIndex] = payable;
+  }
 }
