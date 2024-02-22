@@ -33,4 +33,24 @@ export class PrismaAssignorRepository implements AssignorRepository {
 
     return PrismaAssignorMapper.toDomain(response);
   }
+
+  async delete(assignor: Assignor): Promise<void> {
+    const data = PrismaAssignorMapper.toPrisma(assignor);
+    await this.prisma.assignor.delete({
+      where: {
+        id: data.id,
+      },
+    });
+  }
+
+  async save(assignor: Assignor): Promise<void> {
+    const data = PrismaAssignorMapper.toPrisma(assignor);
+
+    await this.prisma.assignor.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+  }
 }

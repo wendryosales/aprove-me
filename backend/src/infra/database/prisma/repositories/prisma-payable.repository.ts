@@ -28,4 +28,24 @@ export class PrismaPayableRepository implements PayableRepository {
 
     return PrismaPayableMapper.toDomain(response);
   }
+
+  async delete(payable: Payable): Promise<void> {
+    const data = PrismaPayableMapper.toPrisma(payable);
+    await this.prisma.payable.delete({
+      where: {
+        id: data.id,
+      },
+    });
+  }
+
+  async save(payable: Payable): Promise<void> {
+    const data = PrismaPayableMapper.toPrisma(payable);
+
+    await this.prisma.payable.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+  }
 }
