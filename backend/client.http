@@ -6,7 +6,7 @@ Content-Type: application/json
   "value": 1000.00,
   "emissionDate": "2024-02-19T12:00:00Z",
   "assignor": {
-    "document": "99.999.999/9999-12",
+    "document": "99.999.999/9999-18",
     "email": "cedente@example.com",
     "phone": "(27) 1234-5678",
     "name": "Empresa Cedente LTDA"
@@ -14,11 +14,18 @@ Content-Type: application/json
 }
 > {%
   client.global.set("payableId", response.body.id)
+  client.global.set("assignorId", response.body.assignor.id)
 %}
 
 ###
 
 # @name Get payable by id
 GET {{baseUrl}}/integrations/payable/{{payableId}}
+
+###
+###
+
+# @name Get assignor by id
+GET {{baseUrl}}/integrations/assignor/{{assignorId}}
 
 ###
