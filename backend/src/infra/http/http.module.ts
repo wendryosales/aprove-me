@@ -7,6 +7,7 @@ import { PrismaExceptionFilter } from "@/infra/http/filters/prisma-exception.fil
 import { GetPayableByIdUseCase } from "@/domain/application/use-cases/get-payable-by-id";
 import { AssignorController } from "@/infra/http/controllers/assignor.controller";
 import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assignor-by-id";
+import { DeletePayableUseCase } from "@/domain/application/use-cases/delete-payable";
 
 @Module({
   imports: [DatabaseModule],
@@ -15,6 +16,7 @@ import { GetAssignorByIdUseCase } from "@/domain/application/use-cases/get-assig
     CreatePayableUseCase,
     GetPayableByIdUseCase,
     GetAssignorByIdUseCase,
+    DeletePayableUseCase,
     {
       provide: APP_FILTER,
       useClass: PrismaExceptionFilter,
